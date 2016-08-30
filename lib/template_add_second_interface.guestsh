@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+ifconfig -s -a | cut -d' ' -f1 | tail -n +2 | while read x; do
+    if [ "lo" != ${x} ]; then
+        TMP=$(grep "auto $x" /etc/network/interfaces || true)
+        if [ -z  "${TMP}" ]; then
+            echo "No configuration for interface $x in /etc/network/interfaces, will add one"
+            cat <<EOT >> /etc/network/interfaces
+#HOSTONLY additional interface config ${x} START
+auto ${x}
+iface ${x} inet dhcp
+#HOSTONLY additional interface config ${x} END
+EOT
+        fi
+    fi;
+done

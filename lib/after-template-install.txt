@@ -1,0 +1,24 @@
+# Go to guest and install ubuntu. Use all the defaults
+# name user 'guestadmin', and remember the password.
+# Just keep pressing 'Enter' all the time with theese exceptions:
+# * "Write the changes to disk and configure LVM" -> Choose 'Yes'
+# * "Write the changes to disks" -> Choose 'Yes'
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# REMEMBER TO Install OPENSSH SERVER
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+# after installation of ubuntu (while installing use all the default settings)
+# and do:
+
+sudo apt-get install build-essential dkms
+
+# Then in Virtualbox vindow choose devices/Insert Guest additions CD Image
+# And issue following commands:
+
+sudo mount /dev/sr0 /media/cdrom
+sudo /media/cdrom/VBoxLinuxAdditions.sh
+sudo dhclient
+
+# When all is done run ./template-customize.sh

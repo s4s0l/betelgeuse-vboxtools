@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+IP_ADDRESS=$1
+MASK=$2
+GATEWAY=$3
+
+FILE=/etc/network/interfaces
+
+HO_INTERFACE=$(sed -n 's/#HOSTONLY.* \([a-zA-Z0-9]\+\) START/\1/p' $FILE)
+echo using interface ${HO_INTERFACE}
+SUBSTITUTION="\
+#HOSTONLY additional config interface ${HO_INTERFACE} START\n\
+auto ${HO_INTERFACE}\n\
+iface ${HO_INTERFACE} inet static\n\
+address ${IP_ADDRESS}\n\
+netmask ${MASK}\n\
+#gateway ${GATEWAY}"
+
+sed -n -i '/#HOSTONLY.*START/{:a;N;/#HOSTONLY.*END/!ba;s/.*\n/'"${SUBSTITUTION}"'\n/};p' $FILE
+
